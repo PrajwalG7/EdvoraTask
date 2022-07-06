@@ -28,12 +28,12 @@
 
         <TextView
             android:id="@+id/IdUserLoggedName"
-            android:layout_width="wrap_content"
+            android:layout_width="86dp"
             android:layout_height="wrap_content"
-            android:text="Dhruv Singh"
-            android:scrollHorizontally="false"
-            android:ellipsize="none"
             android:layout_marginStart="150dp"
+            android:ellipsize="none"
+            android:scrollHorizontally="false"
+            android:text="Dhruv Singh"
             android:textColor="@color/white"
             android:textSize="12sp"
             android:textStyle="bold" />
@@ -82,8 +82,8 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="18dp"
             android:layout_toRightOf="@id/rides"
-            android:text="Newest"
             android:onClick="newestRide"
+            android:text="Newest"
             android:textSize="16sp" />
 
         <TextView
