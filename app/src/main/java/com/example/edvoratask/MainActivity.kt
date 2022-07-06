@@ -23,57 +23,60 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
             userName=findViewById(R.id.IdUserLoggedName)
+            forNewsetRide()
     }
 
      fun newestRide(view: View) {
+         forNewsetRide()
+    }
 
+    fun forNewsetRide(){
         val RideAPI = RetrofitHelper.getInstance()
             .create(RideAPI::class.java)
 
-         //results
-         result=RideAPI.getRides()
-                result.enqueue(object : Callback<List<RideList>> {
+        //results
+        result=RideAPI.getRides()
+        result.enqueue(object : Callback<List<RideList>> {
 
-                    override fun onResponse(
-                        call: Call<List<RideList>>,
-                        response: Response<List<RideList>>
+            override fun onResponse(
+                call: Call<List<RideList>>,
+                response: Response<List<RideList>>
 
-                    ) {
-                       Log.d("onResponse", response.body().toString())
-                        r = response.body()!!
+            ) {
+                Log.d("onResponse", response.body().toString())
+                r = response.body()!!
 
-                    }
+            }
 
-                    override fun onFailure(
-                        call: Call<List<RideList>>,
-                        t: Throwable
-                    ) {
-                        Log.d("onFailure", t.toString())
-                    }
+            override fun onFailure(
+                call: Call<List<RideList>>,
+                t: Throwable
+            ) {
+                Log.d("onFailure", t.toString())
+            }
 
-                })
+        })
 
-         //userloggedin
-         resultUser=RideAPI.getUser()
-         resultUser.enqueue(object : Callback<UserList> {
+        //userloggedin
+        resultUser=RideAPI.getUser()
+        resultUser.enqueue(object : Callback<UserList> {
 
 
-             override fun onFailure(call: Call<UserList>, t: Throwable) {
-                 Log.d("onFailureUser",t.toString())
-             }
+            override fun onFailure(call: Call<UserList>, t: Throwable) {
+                Log.d("onFailureUser",t.toString())
+            }
 
-             override fun onResponse(call: Call<UserList>, response: Response<UserList>) {
-                 userName.text=response.body()?.name
-             }
+            override fun onResponse(call: Call<UserList>, response: Response<UserList>) {
+                userName.text=response.body()?.name
+            }
 
-         })
+        })
 
-         recyclerView=findViewById (R.id.idRV)
-         recyclerView.layoutManager = LinearLayoutManager(this)
+        recyclerView=findViewById (R.id.idRV)
+        recyclerView.layoutManager = LinearLayoutManager(this)
 
-         if(::r.isInitialized) {
-          recyclerView.adapter = MyAdapter(r)
-      }
-
+        if(::r.isInitialized) {
+            recyclerView.adapter = MyAdapter(r)
+        }
     }
 }
