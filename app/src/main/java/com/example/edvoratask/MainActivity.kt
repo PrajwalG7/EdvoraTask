@@ -13,29 +13,32 @@ import retrofit2.Response
 
 class MainActivity : AppCompatActivity() {
 
-     lateinit var recyclerView: RecyclerView
-     lateinit var r: List<RideList>
-     lateinit var result: Call<List<RideList>>
-     lateinit var resultUser: Call<UserList>
-     lateinit var  userName:TextView
+    lateinit var recyclerView: RecyclerView
+    lateinit var r: List<RideList>
+    private lateinit var result: Call<List<RideList>>
+    private lateinit var resultUser: Call<UserList>
+    lateinit var  userName:TextView
+    private lateinit var RideAPIs:RideAPI
 
-        override fun onCreate(savedInstanceState: Bundle?) {
+
+    override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-            userName=findViewById(R.id.IdUserLoggedName)
-            forNewsetRide()
-    }
+        userName=findViewById(R.id.IdUserLoggedName)
 
-     fun newestRide(view: View) {
-         forNewsetRide()
+        RideAPIs = RetrofitHelper.getInstance()
+                .create(RideAPI::class.java)
+
+        forNewsetRide()
+    }
+    fun newestRide(view: View) {
+        forNewsetRide()
     }
 
     fun forNewsetRide(){
-        val RideAPI = RetrofitHelper.getInstance()
-            .create(RideAPI::class.java)
 
         //results
-        result=RideAPI.getRides()
+        result=RideAPIs.getRides()
         result.enqueue(object : Callback<List<RideList>> {
 
             override fun onResponse(
@@ -43,9 +46,9 @@ class MainActivity : AppCompatActivity() {
                 response: Response<List<RideList>>
 
             ) {
-                Log.d("onResponse", response.body().toString())
                 r = response.body()!!
-
+                Log.d("r", r.toString())
+                recyclerView.adapter = MyAdapter(r)
             }
 
             override fun onFailure(
@@ -58,7 +61,7 @@ class MainActivity : AppCompatActivity() {
         })
 
         //userloggedin
-        resultUser=RideAPI.getUser()
+        resultUser=RideAPIs.getUser()
         resultUser.enqueue(object : Callback<UserList> {
 
 
@@ -75,8 +78,5 @@ class MainActivity : AppCompatActivity() {
         recyclerView=findViewById (R.id.idRV)
         recyclerView.layoutManager = LinearLayoutManager(this)
 
-        if(::r.isInitialized) {
-            recyclerView.adapter = MyAdapter(r)
-        }
     }
 }
