@@ -32,10 +32,28 @@ class MainActivity : AppCompatActivity() {
         RideAPIs = RetrofitHelper.getInstance()
                 .create(RideAPI::class.java)
 
+        userProfile()
         forNewsetRide()
     }
     fun newestRide(view: View) {
         forNewsetRide()
+    }
+
+    fun userProfile(){
+        //userloggedin
+        resultUser=RideAPIs.getUser()
+        resultUser.enqueue(object : Callback<UserList> {
+
+
+            override fun onFailure(call: Call<UserList>, t: Throwable) {
+                Log.d("onFailureUser",t.toString())
+            }
+
+            override fun onResponse(call: Call<UserList>, response: Response<UserList>) {
+                userName.text=response.body()?.name
+            }
+
+        })
     }
 
     fun forNewsetRide(){
@@ -60,21 +78,6 @@ class MainActivity : AppCompatActivity() {
                 t: Throwable
             ) {
                 Log.d("onFailure", t.toString())
-            }
-
-        })
-
-        //userloggedin
-        resultUser=RideAPIs.getUser()
-        resultUser.enqueue(object : Callback<UserList> {
-
-
-            override fun onFailure(call: Call<UserList>, t: Throwable) {
-                Log.d("onFailureUser",t.toString())
-            }
-
-            override fun onResponse(call: Call<UserList>, response: Response<UserList>) {
-                userName.text=response.body()?.name
             }
 
         })
