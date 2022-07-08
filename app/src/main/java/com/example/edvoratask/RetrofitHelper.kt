@@ -7,9 +7,10 @@ object RetrofitHelper {
 
     const val baseUrl = "https://assessment.api.vweb.app"
 
-    fun getInstance(): Retrofit {
-        return Retrofit.Builder().baseUrl(baseUrl)
-            .addConverterFactory(GsonConverterFactory.create())
-            .build()
+  fun getInstance(): Retrofit {
+          return Retrofit.Builder().baseUrl(baseUrl)
+              .addConverterFactory(GsonConverterFactory.create())
+              .build()
+
     }
 }

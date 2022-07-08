@@ -8,12 +8,10 @@ import androidx.recyclerview.widget.RecyclerView
 
 class MyAdapter(private val mList: List<RideList>) : RecyclerView.Adapter<MyAdapter.ViewHolder>() {
 
-
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
 
         val view = LayoutInflater.from(parent.context)
             .inflate(R.layout.card, parent, false)
-
         return ViewHolder(view)
     }
 
@@ -26,8 +24,6 @@ class MyAdapter(private val mList: List<RideList>) : RecyclerView.Adapter<MyAdap
         holder.Date.setText("Date: "+mList[position].date)
         holder.CityName.setText("City Name: "+"\n"+mList[position].city)
         holder.StateName.setText("State Name: "+"\n"+mList[position].state)
-
-
 
     }
 
@@ -46,5 +42,7 @@ class MyAdapter(private val mList: List<RideList>) : RecyclerView.Adapter<MyAdap
         val Distance=itemView.findViewById<TextView>(R.id.idDistance)
         val CityName=itemView.findViewById<TextView>(R.id.idStateName)
         val StateName=itemView.findViewById<TextView>(R.id.idCityName)
+
+        //Distance = nearest or equal value of station_code in station_path list
     }
 }
