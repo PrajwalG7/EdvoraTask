@@ -20,7 +20,7 @@ class MyAdapter(private val mList: List<RideList>) : RecyclerView.Adapter<MyAdap
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
 
-        holder.rideId.setText("City Name: "+mList[position].id.toString())
+        holder.rideId.setText("Ride Id: "+mList[position].id.toString())
         holder.Origin_Station.setText("Origin Station: "+mList[position].origin_station_code.toString())
         holder.station_path.setText("station_path: "+mList[position].station_path.toString())
         holder.Date.setText("Date: "+mList[position].date)
