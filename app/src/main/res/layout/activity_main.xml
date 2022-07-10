@@ -88,24 +88,24 @@
             android:textSize="16sp" />
 
         <TextView
+            android:id="@+id/UpcomingRides"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Upcoming"
-            android:textSize="16sp"
-            android:id="@+id/UpcomingRides"
-            android:layout_toRightOf="@id/nearestRides"
             android:layout_marginLeft="18dp"
-            />
+            android:layout_toRightOf="@id/nearestRides"
+            android:onClick="upcomingRide"
+            android:text="Upcoming"
+            android:textSize="16sp" />
 
         <TextView
+            android:id="@+id/pastRides"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Past"
-            android:textSize="16sp"
-            android:id="@+id/pastRides"
-            android:layout_toRightOf="@id/UpcomingRides"
             android:layout_marginLeft="18dp"
-            />
+            android:layout_toRightOf="@id/UpcomingRides"
+            android:text="Past"
+            android:onClick="pastRide"
+            android:textSize="16sp" />
         <ImageView
             android:layout_width="wrap_content"
             android:layout_marginLeft="18dp"
