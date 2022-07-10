@@ -1,7 +1,6 @@
 package com.example.edvoratask
 
 import android.graphics.Paint
-import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -20,6 +19,7 @@ class MainActivity : AppCompatActivity() {
 
     lateinit var recyclerView: RecyclerView
     lateinit var r: List<RideList>
+    val re: MutableList<RideList> = ArrayList()
     private lateinit var result: Call<List<RideList>>
     private lateinit var resultUser: Call<UserList>
     lateinit var  userName:TextView
@@ -32,12 +32,12 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-
         val w: Window = window
         w.setFlags(
             WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
             WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS
         )
+
         userName=findViewById(R.id.IdUserLoggedName)
         nearestRides=findViewById(R.id.nearestRides)
 
@@ -56,11 +56,10 @@ class MainActivity : AppCompatActivity() {
         resultUser=RideAPIs.getUser()
         resultUser.enqueue(object : Callback<UserList> {
 
-
             override fun onFailure(call: Call<UserList>, t: Throwable) {
                 Log.d("onFailureUser",t.toString())
-            }
 
+            }
             override fun onResponse(call: Call<UserList>, response: Response<UserList>) {
                 userName.text=response.body()?.name
                 userLoggedStationCode= response.body()?.station_code!!
@@ -82,8 +81,24 @@ class MainActivity : AppCompatActivity() {
 
             ) {
                 r = response.body()!!
-                Log.d("r", r.toString())
-                recyclerView.adapter = MyAdapter(r)
+
+                //when getting response r as List<RideList> do check if userLoggedStationCode is present in each station path and if present
+                // add that specific sublist in another list and send it to adapter
+
+                val listToCheckInCodes: MutableList<Int> = ArrayList()
+
+                for (i in r.indices) {
+                   for(j in r[i].station_path!! ){
+                       listToCheckInCodes.add(j)
+                   }
+                    for(iterate in listToCheckInCodes){
+                        if(userLoggedStationCode==iterate){
+                            re.add(r[i])
+                        }
+                    }
+                    listToCheckInCodes.clear()
+                }
+              recyclerView.adapter = MyAdapter(re)
             }
 
             override fun onFailure(
@@ -100,3 +115,5 @@ class MainActivity : AppCompatActivity() {
 
     }
 }
+
+
