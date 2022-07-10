@@ -6,7 +6,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 
-class MyAdapter(private val mList: List<RideList>) : RecyclerView.Adapter<MyAdapter.ViewHolder>() {
+class MyAdapter(private val mList: List<RideList>,var distance:Int) : RecyclerView.Adapter<MyAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
 
@@ -24,6 +24,7 @@ class MyAdapter(private val mList: List<RideList>) : RecyclerView.Adapter<MyAdap
         holder.Date.setText("Date: "+mList[position].date)
         holder.CityName.setText("City Name: "+"\n"+mList[position].city)
         holder.StateName.setText("State Name: "+"\n"+mList[position].state)
+        holder.Distance.setText("Distance: "+distance)
 
     }
 
@@ -39,9 +40,9 @@ class MyAdapter(private val mList: List<RideList>) : RecyclerView.Adapter<MyAdap
         var Origin_Station= itemView.findViewById<TextView>(R.id.idOriginStation)
         val station_path=itemView.findViewById<TextView>(R.id.idStationPath)
         val Date=itemView.findViewById<TextView>(R.id.idDate)
-        val Distance=itemView.findViewById<TextView>(R.id.idDistance)
         val CityName=itemView.findViewById<TextView>(R.id.idStateName)
         val StateName=itemView.findViewById<TextView>(R.id.idCityName)
+        val Distance =itemView.findViewById<TextView>(R.id.idDistance)
 
         //Distance = nearest or equal value of station_code in station_path list
     }
