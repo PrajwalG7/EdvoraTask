@@ -20,23 +20,23 @@ class MainActivity : AppCompatActivity() {
     private lateinit var resultUser: Call<UserList>
     lateinit var  userName:TextView
     private lateinit var RideAPIs:RideAPI
-    private lateinit var newestRides:TextView
+    private lateinit var nearestRides:TextView
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         userName=findViewById(R.id.IdUserLoggedName)
-        newestRides=findViewById(R.id.newestRides)
+        nearestRides=findViewById(R.id.nearestRides)
 
         RideAPIs = RetrofitHelper.getInstance()
                 .create(RideAPI::class.java)
 
         userProfile()
-        forNewsetRide()
+        forNearestRide()
     }
-    fun newestRide(view: View) {
-        forNewsetRide()
+    fun nearestRide(view: View) {
+        forNearestRide()
     }
 
     fun userProfile(){
@@ -56,8 +56,8 @@ class MainActivity : AppCompatActivity() {
         })
     }
 
-    fun forNewsetRide(){
-        newestRides.setPaintFlags(newestRides.getPaintFlags() or Paint.UNDERLINE_TEXT_FLAG)
+    fun forNearestRide(){
+        nearestRides.setPaintFlags(nearestRides.getPaintFlags() or Paint.UNDERLINE_TEXT_FLAG)
 
         //results
         result=RideAPIs.getRides()
