@@ -1,15 +1,18 @@
 package com.example.edvoratask
 
+import android.graphics.Color
 import android.graphics.Paint
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.view.Window
 import android.view.WindowManager
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -25,7 +28,11 @@ class MainActivity : AppCompatActivity() {
     lateinit var  userName:TextView
     private lateinit var RideAPIs:RideAPI
     private lateinit var nearestRides:TextView
+    private lateinit var upcomingRides:TextView
+    private lateinit var pastRides:TextView
+    private lateinit var userLoggedProfile:ImageView
     var userLoggedStationCode:Int=0
+    var distance:Int=0
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -40,6 +47,10 @@ class MainActivity : AppCompatActivity() {
 
         userName=findViewById(R.id.IdUserLoggedName)
         nearestRides=findViewById(R.id.nearestRides)
+        upcomingRides=findViewById(R.id.UpcomingRides)
+        pastRides=findViewById(R.id.pastRides)
+        userLoggedProfile=findViewById(R.id.IdUserLoggedImg)
+        nearestRides.setTextColor(Color.parseColor("#FFFFFF"))
 
         RideAPIs = RetrofitHelper.getInstance()
                 .create(RideAPI::class.java)
@@ -48,6 +59,24 @@ class MainActivity : AppCompatActivity() {
         forNearestRide()
     }
     fun nearestRide(view: View) {
+        upcomingRides.setTextColor(Color.parseColor("#c2bebe"))
+        pastRides.setTextColor(Color.parseColor("#c2bebe"))
+        nearestRides.setTextColor(Color.parseColor("#FFFFFF"))
+        forNearestRide()
+    }
+
+    fun upcomingRide(view: View){
+        nearestRides.setTextColor(Color.parseColor("#c2bebe"))
+        pastRides.setTextColor(Color.parseColor("#c2bebe"))
+        upcomingRides.setTextColor(Color.parseColor("#FFFFFF"))
+        forNearestRide()
+    }
+
+    fun pastRide(view: View){
+        nearestRides.setTextColor(Color.parseColor("#c2bebe"))
+        upcomingRides.setTextColor(Color.parseColor("#c2bebe"))
+        pastRides.setTextColor(Color.parseColor("#FFFFFF"))
+
         forNearestRide()
     }
 
@@ -63,14 +92,16 @@ class MainActivity : AppCompatActivity() {
             override fun onResponse(call: Call<UserList>, response: Response<UserList>) {
                 userName.text=response.body()?.name
                 userLoggedStationCode= response.body()?.station_code!!
+                Glide.with(applicationContext)
+                    .load(response.body()!!.url)
+                    .into(userLoggedProfile)
+
             }
 
         })
     }
 
     fun forNearestRide(){
-        nearestRides.setPaintFlags(nearestRides.getPaintFlags() or Paint.UNDERLINE_TEXT_FLAG)
-
         //results
         result=RideAPIs.getRides()
         result.enqueue(object : Callback<List<RideList>> {
@@ -83,7 +114,7 @@ class MainActivity : AppCompatActivity() {
                 r = response.body()!!
 
                 //when getting response r as List<RideList> do check if userLoggedStationCode is present in each station path and if present
-                // add that specific sublist in another list and send it to adapter
+                // add that index of list r to re as List<RideList> and send it to MyAdapter
 
                 val listToCheckInCodes: MutableList<Int> = ArrayList()
 
@@ -98,7 +129,7 @@ class MainActivity : AppCompatActivity() {
                     }
                     listToCheckInCodes.clear()
                 }
-              recyclerView.adapter = MyAdapter(re)
+              recyclerView.adapter = MyAdapter(re,distance)
             }
 
             override fun onFailure(
