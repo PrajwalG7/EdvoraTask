@@ -1,9 +1,12 @@
 package com.example.edvoratask
 
 import android.graphics.Paint
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.view.Window
+import android.view.WindowManager
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -11,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+
 
 class MainActivity : AppCompatActivity() {
 
@@ -21,11 +25,19 @@ class MainActivity : AppCompatActivity() {
     lateinit var  userName:TextView
     private lateinit var RideAPIs:RideAPI
     private lateinit var nearestRides:TextView
+    var userLoggedStationCode:Int=0
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+
+        val w: Window = window
+        w.setFlags(
+            WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
+            WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS
+        )
         userName=findViewById(R.id.IdUserLoggedName)
         nearestRides=findViewById(R.id.nearestRides)
 
@@ -51,6 +63,7 @@ class MainActivity : AppCompatActivity() {
 
             override fun onResponse(call: Call<UserList>, response: Response<UserList>) {
                 userName.text=response.body()?.name
+                userLoggedStationCode= response.body()?.station_code!!
             }
 
         })
