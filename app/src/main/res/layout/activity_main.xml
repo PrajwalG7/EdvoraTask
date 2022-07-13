@@ -64,6 +64,7 @@
         android:layout_marginTop="20dp"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
+        android:id="@+id/rl"
 
         >
 
@@ -114,19 +115,74 @@
             android:layout_toRightOf="@+id/pastRides"
             android:src="@drawable/ic_baseline_menu_open_24"
             />
-
         <TextView
+            android:id="@+id/filter"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/filterImg"
+            android:onClick="filter"
             android:text="Filter"
             android:textSize="16sp"
-            android:id="@+id/filter"
-            android:layout_toRightOf="@id/filterImg"
-
             />
 
-    </RelativeLayout>
 
+        <!--        added code-->
+        <RelativeLayout
+            android:id="@+id/relLayout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="50dp"
+            android:layout_marginTop="35dp"
+            android:visibility="gone">
+
+            <Spinner
+                android:id="@+id/spin_state"
+                android:layout_width="96dp"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_marginEnd="157dp"
+                android:backgroundTint="@color/white" />
+
+            <TextView
+                android:id="@+id/spin_state_name"
+                android:layout_width="114dp"
+                android:layout_height="wrap_content"
+                android:layout_alignEnd="@+id/spin_state"
+                android:layout_marginEnd="104dp"
+                android:layout_marginRight="56dp"
+                android:layout_toLeftOf="@+id/spin_state"
+                android:text="State"
+                android:textSize="14sp" />
+
+            <Spinner
+                android:id="@+id/spin_city"
+                android:layout_width="95dp"
+                android:layout_height="wrap_content"
+                android:layout_alignBottom="@+id/spin_state"
+                android:layout_alignParentEnd="true"
+                android:layout_marginEnd="157dp"
+                android:layout_marginBottom="-26dp"
+                android:backgroundTint="@color/white" />
+
+            <TextView
+
+                android:id="@+id/spin_city_name"
+                android:layout_width="115dp"
+                android:layout_height="wrap_content"
+                android:layout_alignEnd="@+id/spin_city"
+                android:layout_alignBottom="@+id/spin_city"
+                android:layout_marginEnd="104dp"
+                android:layout_marginRight="56dp"
+                android:layout_toLeftOf="@+id/spin_city"
+                android:text="City"
+                android:textSize="14sp" />
+
+        </RelativeLayout>
+
+
+        <!--        code ended-->
+
+    </RelativeLayout>
     <androidx.recyclerview.widget.RecyclerView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -137,5 +193,9 @@
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         android:orientation="vertical"
 
-        />
+
+       />
+
+
+
 </androidx.appcompat.widget.LinearLayoutCompat>
