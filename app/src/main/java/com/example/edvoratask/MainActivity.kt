@@ -14,6 +14,8 @@ import com.bumptech.glide.Glide
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.util.*
+import kotlin.collections.ArrayList
 
 
 class MainActivity : AppCompatActivity() {
@@ -157,11 +159,13 @@ class MainActivity : AppCompatActivity() {
     fun filter(view: View) {
 
             relativeLayout=findViewById(R.id.relLayout)
-
+        val listForStates: MutableList<String> = ArrayList()
+        val listForCitiesOfSelectedState: MutableList<String> = ArrayList()
             if(clicked%2==0){
                 relativeLayout.visibility=View.GONE
             }
            else{
+
             filter.setTextColor(Color.parseColor("#FFFFFF"))
             nearestRides.setTextColor(Color.parseColor("#c2bebe"))
             upcomingRides.setTextColor(Color.parseColor("#c2bebe"))
@@ -174,9 +178,6 @@ class MainActivity : AppCompatActivity() {
             val spinnerState = findViewById<Spinner>(R.id.spin_state)
             val spinnerCity = findViewById<Spinner>(R.id.spin_city)
 
-
-            val listForStates: MutableList<String> = ArrayList()
-            val listForCitiesOfSelectedState: MutableList<String> = ArrayList()
 
             for (i in re.indices) {
                 listForStates.add(re[i].state)
@@ -197,11 +198,10 @@ class MainActivity : AppCompatActivity() {
                     position: Int,
                     id: Long
                 ) {
-                    //       Toast.makeText(applicationContext, parentView.getItemAtPosition(position).toString(), Toast.LENGTH_SHORT).show()
-                    val selectedState = parentView.getItemAtPosition(position)
-
-                    for (i in re.indices) {
-                        if (re[i].state == selectedState) {
+                 val  selectedState = parentView.getItemAtPosition(position)
+                    listForCitiesOfSelectedState.clear()
+                    for (i in listForStates.indices) {
+                        if (listForStates[i] == selectedState) {
                             listForCitiesOfSelectedState.add(re[i].city)
                         }
                     }
@@ -213,24 +213,42 @@ class MainActivity : AppCompatActivity() {
                     )
                     spinnerCity.adapter = adapterCity
 
-                    for (i in listForCitiesOfSelectedState.indices) {
-                        for (j in re.indices) {
-                            if (re[j].city == listForCitiesOfSelectedState[i]) {
-                                filteredList.add(re[j])
-                            }
-
-                        }
-                    }
-
-                    recyclerView.adapter = MyAdapter(filteredList, distance)
                 }
 
                 override fun onNothingSelected(adapterView: AdapterView<*>?) {}
             }
+                spinnerCity.onItemSelectedListener=object: AdapterView.OnItemSelectedListener {
+                    override fun onItemSelected(
+                        parent: AdapterView<*>?,
+                        view: View?,
+                        position: Int,
+                        id: Long
+                    ) {
+
+                        for (i in listForCitiesOfSelectedState.indices) {
+                            for (j in re.indices) {
+                                if (re[j].city == listForCitiesOfSelectedState[i]) {
+                                    filteredList.add(re[j])
+                                }
+
+                            }
+                        }
+
+                        recyclerView.adapter = MyAdapter(filteredList, distance)
+
+                    }
+
+                    override fun onNothingSelected(parent: AdapterView<*>?) {
+
+                    }
+
+                }
 
 
         }
+
         clicked += 1
+
     }
 }
  
